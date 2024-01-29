@@ -23,6 +23,11 @@ Hey, Netology
 
 Опубликуйте созданный fork в своём репозитории и предоставьте ответ в виде ссылки на https://hub.docker.com/username_repo.
 
+```
+Ответ:
+docker pull rybakindoc/dz:latest
+```
+
 ## Задача 2
 
 Посмотрите на сценарий ниже и ответьте на вопрос:
@@ -35,13 +40,22 @@ Hey, Netology
 Сценарий:
 
 - высоконагруженное монолитное Java веб-приложение;
+```ВИРТУАЛКА: монолитное + высоконагруженноею ```
 - Nodejs веб-приложение;
+```DOCKER. маленький микросервис легко откатить, протестить, развернуть заново```
 - мобильное приложение c версиями для Android и iOS;
+```ФИЗИЧЕСКАЯ МАШИНА. разные архитектуры, наверняка будут использоваться несколько виртуалок```
 - шина данных на базе Apache Kafka;
+```ВИРТУАЛКА```
 - Elasticsearch-кластер для реализации логирования продуктивного веб-приложения — три ноды elasticsearch, два logstash и две ноды kibana;
+```DOCKER, но если очень много данных то - с Elasticsearch на ВИРТУАЛКУ```
 - мониторинг-стек на базе Prometheus и Grafana;
+```DOCKER. програмы мало затратны, но если огромный штат устройств то лучше на виртуалку ```
 - MongoDB как основное хранилище данных для Java-приложения;
+```ВИРТУАЛКА, много данных хранить безопастнее на виртуалке```
 - Gitlab-сервер для реализации CI/CD-процессов и приватный (закрытый) Docker Registry.
+```ВИРТУАЛКА```
+```Но для этих сценариев, всё равно нужна ФИЗИЧЕСКАЯ МАШИНА```
 
 ## Задача 3
 
@@ -50,6 +64,26 @@ Hey, Netology
 - Подключитесь к первому контейнеру с помощью ```docker exec``` и создайте текстовый файл любого содержания в ```/data```.
 - Добавьте ещё один файл в папку ```/data``` на хостовой машине.
 - Подключитесь во второй контейнер и отобразите листинг и содержание файлов в ```/data``` контейнера.
+
+```
+docker run -d -it -v /data:/data centos:latest
+docker run -d -it -v /data:/data debian:latest
+
+root@Debian-Rybakin:~# docker ps
+CONTAINER ID   IMAGE           COMMAND           NAMES
+12cec703178d   debian:latest   "bash"            relaxed_zhukovsky
+e6ea3d520a26   centos:latest   "/bin/bash"       great_hugle
+
+docker exec  relaxed_zhukovsky echo relaxed_zhukovsky > /data/centos
+
+echo server1 > /data/host
+
+root@Debian-Rybakin:~# docker exec great_hugle ls -l /data
+total 8
+-rw-r--r-- 1 root root 18 Jan 28 14:12 centos
+-rw-r--r-- 1 root root  8 Jan 28 14:17 host
+
+```
 
 ## Задача 4 (*)
 
